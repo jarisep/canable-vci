@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.28.0)
+find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+project(ciso LANGUAGES C)
+set_property(TARGET subsys__canbus__isotp PROPERTY SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/vendor/isotp.c)
+target_include_directories(subsys__canbus__isotp PRIVATE include vendor)
+target_include_directories(app PRIVATE include vendor)
+target_sources(app PRIVATE src/service.c src/usb.c src/main.c)

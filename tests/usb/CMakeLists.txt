@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.28.0)
+find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+project(ciso_usb_tests LANGUAGES C)
+get_filename_component(FW ../../firmware ABSOLUTE)
+target_include_directories(app PRIVATE ${FW}/include)
+target_include_directories(app PRIVATE ${ZEPHYR_BASE}/subsys/usb/host)
+target_sources(app PRIVATE ${FW}/src/usb.c src/main.c)

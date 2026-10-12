@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "origin": "proposed_synthetic_usb_vectors",
+  "auto_replay_to_vehicle": false,
+  "notes": "Wire examples for independent codecs. Device timestamps are invented. RX_COMPLETE padding status is copied from Bosch, not measured on CANable. Cases are independent examples, not one executable command sequence.",
+  "vectors": [
+    {
+      "id": "hello",
+      "kind": 1,
+      "operation": "HELLO",
+      "header": {
+        "session_id": 0,
+        "channel_generation": 0,
+        "request_id": 1,
+        "device_time_us": 0
+      },
+      "body_fields": {
+        "host_nonce": 72623859790382856,
+        "lease_ms": 5000,
+        "reserved_zero": 0
+      },
+      "tail_hex": "",
+      "wire_hex": "4349534f0101010010000000000000000000000001000000000000000000000008070605040302018813000000000000",
+      "source_reference": null
+    },
+    {
+      "id": "open_500k",
+      "kind": 1,
+      "operation": "CHANNEL_OPEN",
+      "header": {
+        "session_id": 287454020,
+        "channel_generation": 1,
+        "request_id": 2,
+        "device_time_us": 0
+      },
+      "body_fields": {
+        "protocol_id": 32773,
+        "connect_flags": 0,
+        "bitrate": 500000
+      },
+      "tail_hex": "",
+      "wire_hex": "4349534f010110000c0000004433221101000000020000000000000000000000058000000000000020a10700",
+      "source_reference": null
+    },
+    {
+      "id": "bsi_route",
+      "kind": 1,
+      "operation": "ROUTE_ADD",
+      "header": {
+        "session_id": 287454020,
+        "channel_generation": 1,
+        "request_id": 3,
+        "device_time_us": 0
+      },
+      "body_fields": {
+        "route_id": 1,
+        "rx_can_id": 1618,
+        "tx_can_id": 1874,
+        "address_flags": 0,
+        "fc_j2534_tx_flags": 0,
+        "rx_ext_addr": 0,
+        "tx_ext_addr": 0,
+        "fc_bs": 0,
+        "fc_stmin_code": 0
+      },
+      "tail_hex": "",
+      "wire_hex": "4349534f01012000180000004433221101000000030000000000000000000000010000005206000052070000000000000000000000000000",
+      "source_reference": null
+    },
+    {
+      "id": "bsi_session_request",
+      "kind": 1,
+      "operation": "TX_SUBMIT",
+      "header": {
+        "session_id": 287454020,
+        "channel_generation": 1,
+        "request_id": 4,
+        "device_time_us": 0
+      },
+      "body_fields": {
+        "route_id": 1,
+        "j2534_tx_flags": 0,
+        "payload_bytes": 2,
+        "reserved_zero": 0,
+        "deadline_ms": 1000
+      },
+      "tail_hex": "1003",
+      "wire_hex": "4349534f01013000120000004433221101000000040000000000000000000000010000000000000002000000e80300001003",
+      "source_reference": {
+        "case": "bsi_single_frame_session",
+        "line": 14,
+        "extract": "Data[4:]"
+      }
+    },
+    {
+      "id": "bsi_tx_done",
+      "kind": 3,
+      "operation": "TX_DONE",
+      "header": {
+        "session_id": 287454020,
+        "channel_generation": 1,
+        "request_id": 4,
+        "device_time_us": 10000
+      },
+      "body_fields": {
+        "event_seq": 1,
+        "route_id": 1,
+        "transfer_id": 4,
+        "j2534_rx_status": 9,
+        "can_id": 1874,
+        "ext_addr": 0,
+        "reserved_zero": 0,
+        "payload_bytes_zero": 0
+      },
+      "tail_hex": "",
+      "wire_hex": "4349534f01030001180000004433221101000000040000001027000000000000010000000100000004000000090000005207000000000000",
+      "source_reference": null
+    },
+    {
+      "id": "bsi_rx_start",
+      "kind": 3,
+      "operation": "RX_START",
+      "header": {
+        "session_id": 287454020,
+        "channel_generation": 1,
+        "request_id": 0,
+        "device_time_us": 20000
+      },
+      "body_fields": {
+        "event_seq": 2,
+        "route_id": 1,
+        "transfer_id": 1,
+        "j2534_rx_status": 2,
+        "can_id": 1618,
+        "ext_addr": 0,
+        "reserved_zero": 0,
+        "expected_payload_bytes": 25
+      },
+      "tail_hex": "",
+      "wire_hex": "4349534f0103010118000000443322110100000000000000204e000000000000020000000100000001000000020000005206000000001900",
+      "source_reference": null
+    },
+    {
+      "id": "bsi_rx_complete",
+      "kind": 3,
+      "operation": "RX_COMPLETE",
+      "header": {
+        "session_id": 287454020,
+        "channel_generation": 1,
+        "request_id": 0,
+        "device_time_us": 35000
+      },
+      "body_fields": {
+        "event_seq": 3,
+        "route_id": 1,
+        "transfer_id": 1,
+        "j2534_rx_status": 16,
+        "can_id": 1618,
+        "ext_addr": 0,
+        "reserved_zero": 0,
+        "payload_bytes": 25
+      },
+      "tail_hex": "62f080a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9ba",
+      "wire_hex": "4349534f0103020131000000443322110100000000000000b88800000000000003000000010000000100000010000000520600000000190062f080a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9ba",
+      "source_reference": {
+        "case": "bsi_multiframe_identification",
+        "line": 20,
+        "extract": "Data[4:]"
+      }
+    },
+    {
+      "id": "ack_rx",
+      "kind": 1,
+      "operation": "EVENT_ACK",
+      "header": {
+        "session_id": 287454020,
+        "channel_generation": 0,
+        "request_id": 5,
+        "device_time_us": 0
+      },
+      "body_fields": {
+        "event_seq": 3
+      },
+      "tail_hex": "",
+      "wire_hex": "4349534f0101500004000000443322110000000005000000000000000000000003000000",
+      "source_reference": null
+    },
+    {
+      "id": "extended_session_request",
+      "kind": 1,
+      "operation": "TX_SUBMIT",
+      "header": {
+        "session_id": 287454020,
+        "channel_generation": 1,
+        "request_id": 6,
+        "device_time_us": 0
+      },
+      "body_fields": {
+        "route_id": 2,
+        "j2534_tx_flags": 128,
+        "payload_bytes": 2,
+        "reserved_zero": 0,
+        "deadline_ms": 1000
+      },
+      "tail_hex": "1003",
+      "wire_hex": "4349534f01013000120000004433221101000000060000000000000000000000020000008000000002000000e80300001003",
+      "source_reference": {
+        "case": "extended_address_complete_response",
+        "line": 1196,
+        "extract": "Data[5:]; CAN ID and extended address belong to route 2"
+      }
+    },
+    {
+      "id": "flow_control_timeout",
+      "kind": 3,
+      "operation": "TRANSFER_ERROR",
+      "header": {
+        "session_id": 287454020,
+        "channel_generation": 1,
+        "request_id": 7,
+        "device_time_us": 1000000
+      },
+      "body_fields": {
+        "event_seq": 4,
+        "route_id": 1,
+        "transfer_id": 7,
+        "j2534_rx_status_zero": 0,
+        "can_id": 1874,
+        "ext_addr": 0,
+        "reserved_zero": 0,
+        "payload_bytes_zero": 0,
+        "reason": 2,
+        "zephyr_error": -2
+      },
+      "tail_hex": "",
+      "wire_hex": "4349534f010303012000000044332211010000000700000040420f000000000004000000010000000700000000000000520700000000000002000000feffffff",
+      "source_reference": null
+    }
+  ]
+}

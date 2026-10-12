@@ -1,0 +1,3 @@
+# Preserve upstream license text and unified-diff context byte for byte.
+licenses/* -whitespace
+firmware/vendor/mcan-stop.patch -whitespace

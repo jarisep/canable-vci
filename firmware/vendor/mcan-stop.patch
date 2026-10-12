@@ -1,0 +1,22 @@
+--- a/drivers/can/can_mcan.c
++++ b/drivers/can/can_mcan.c
+@@ -354,6 +354,19 @@
+ 	if (!data->common.started) {
+ 		return -EALREADY;
+ 	}
++
++    /* CISO: remove pending requests before restart; INIT alone retains them. */
++    uint32_t pending;
++    err = can_mcan_write_reg(dev, CAN_MCAN_TXBCR, UINT32_MAX);
++    if (err) { return err; }
++    int64_t cancel_limit = k_uptime_get() + 20;
++    do {
++        err = can_mcan_read_reg(dev, CAN_MCAN_TXBRP, &pending);
++        if (err) { return err; }
++        if (!pending) { break; }
++        if (k_uptime_get() >= cancel_limit) { return -ETIMEDOUT; }
++        k_sleep(K_USEC(100));
++    } while (pending);
+ 
+ 	/* CAN transmissions are automatically stopped when entering init mode */
+ 	err = can_mcan_enter_init_mode(dev, K_MSEC(CAN_INIT_TIMEOUT_MS));

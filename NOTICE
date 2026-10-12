@@ -1,0 +1,47 @@
+CANable VCI
+Copyright 2026 jarisep and CANable VCI contributors.
+
+Project-authored code, documentation and modifications are Apache-2.0.
+A copy of the license is provided in LICENSE. Third-party material retains its
+own terms; this notice does not relicense third-party software or trademarks.
+
+Zephyr ISO-TP, context declarations and the M_CAN driver patch derive from:
+https://github.com/zephyrproject-rtos/zephyr
+Revision: 920074c07cf4b503f70670cf424e4add4325d05a
+License: Apache-2.0, except individually marked upstream components.
+Original ISO-TP copyright: 2019 Alexander Wachter.
+Modifications include the dedicated work queue, bounded message ownership,
+transfer events, padding, cancellation/CAN completion, and shared RX/FC filtering.
+Original notices remain in vendored files; see firmware/vendor/PROVENANCE.md.
+
+USB setup derives from CANnectivity and Zephyr's next-generation USB examples:
+https://github.com/CANnectivity/cannectivity
+Revision: 93eb616f21e270200846ffc20d128c57fdbe5dab
+License: Apache-2.0.
+Copyright 2024-2026 Henrik Brix Andersen; 2022, 2025 Nordic Semiconductor ASA.
+This project implements a dedicated CISO class, not upstream gs_usb.
+
+Pinned firmware dependencies retain their own source licenses:
+CMSIS 6: 1c1840af7a7e757d6e2fec3ddb0e5ce0dfcc93c8 (Apache-2.0).
+STM32 HAL: c9550199186236d610092f4005f8c9bae2a6bfcf.
+The STM32G4 SoC files use Apache-2.0; STM32G4 drivers use BSD-3-Clause.
+Zephyr minimal-libc and other individually marked components retain their terms.
+The tested configuration does not fetch or distribute ST wireless binary blobs.
+License copies and compiled-source notices are included under licenses/.
+Arm GCC 14.2.1 libgcc contributes runtime helpers under GPL-3.0-or-later
+WITH GCC-exception-3.1; license/copyright copies are provided. The runtime
+exception does not change the project source license to GPL.
+
+Windows builds use Zig 0.16.0 and its distributed runtime components:
+Zig compiler/runtime: MIT.
+LLVM libc++, libc++abi and libunwind: Apache-2.0 WITH LLVM-exception and retained
+third-party notices, as recorded in their complete LICENSE.TXT copies.
+MinGW-w64: ZPL-2.1 and individually marked components; complete COPYING included.
+These terms apply to their contributions, not as a replacement project license.
+Microsoft WinUSB is an operating-system component and is not redistributed.
+
+Anonymized offline fixtures derive transport shapes from compatibility research.
+Identifying application payloads are replaced by synthetic bytes. Raw captures,
+proprietary diagnostic applications/DLLs, device backups and activation/profile
+experiments are not included. Third-party applications must be obtained and used
+under their own terms. Vehicle/app names are descriptive references only.

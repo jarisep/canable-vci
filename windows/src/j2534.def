@@ -1,0 +1,17 @@
+; SPDX-License-Identifier: Apache-2.0
+LIBRARY CanableJ2534
+EXPORTS
+ PassThruOpen
+ PassThruClose
+ PassThruConnect
+ PassThruDisconnect
+ PassThruReadMsgs
+ PassThruWriteMsgs
+ PassThruStartPeriodicMsg
+ PassThruStopPeriodicMsg
+ PassThruStartMsgFilter
+ PassThruStopMsgFilter
+ PassThruSetProgrammingVoltage
+ PassThruReadVersion
+ PassThruGetLastError
+ PassThruIoctl

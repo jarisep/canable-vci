@@ -1,0 +1,493 @@
+{
+  "name": "CANable ISO-TP bulk protocol",
+  "status": "stage1_contract_not_deployed",
+  "version": 1,
+  "byte_order": "little",
+  "header_bytes": 32,
+  "header_struct": "<4sBBHIIIIQ",
+  "header_fields": [
+    {
+      "name": "magic",
+      "offset": 0,
+      "type": "bytes4",
+      "value": "CISO"
+    },
+    {
+      "name": "version",
+      "offset": 4,
+      "type": "u8",
+      "value": 1
+    },
+    {
+      "name": "kind",
+      "offset": 5,
+      "type": "u8"
+    },
+    {
+      "name": "opcode",
+      "offset": 6,
+      "type": "u16"
+    },
+    {
+      "name": "body_bytes",
+      "offset": 8,
+      "type": "u32"
+    },
+    {
+      "name": "session_id",
+      "offset": 12,
+      "type": "u32"
+    },
+    {
+      "name": "channel_generation",
+      "offset": 16,
+      "type": "u32"
+    },
+    {
+      "name": "request_id",
+      "offset": 20,
+      "type": "u32"
+    },
+    {
+      "name": "device_time_us",
+      "offset": 24,
+      "type": "u64"
+    }
+  ],
+  "kinds": {
+    "COMMAND": 1,
+    "RESPONSE": 2,
+    "EVENT": 3
+  },
+  "max_body_bytes": 4160,
+  "max_isotp_payload_bytes": 4095,
+  "response_prefix": [
+    {
+      "name": "result",
+      "type": "u32"
+    }
+  ],
+  "results": {
+    "OK": 0,
+    "BAD_VERSION": 1,
+    "BAD_LENGTH": 2,
+    "BAD_SESSION": 3,
+    "BAD_CHANNEL": 4,
+    "UNSUPPORTED": 5,
+    "INVALID_VALUE": 6,
+    "BUSY": 7,
+    "NO_RESOURCE": 8,
+    "NOT_CONNECTED": 9,
+    "INTERNAL_ERROR": 10,
+    "BAD_REQUEST_ORDER": 11
+  },
+  "commands": [
+    {
+      "name": "HELLO",
+      "opcode": 1,
+      "scope": "discovery",
+      "format": "<QII",
+      "fields": [
+        "host_nonce",
+        "lease_ms",
+        "reserved_zero"
+      ],
+      "reply_format": "<IQQIII",
+      "reply_fields": [
+        "result",
+        "host_nonce",
+        "boot_id",
+        "session_id",
+        "lease_ms",
+        "caps_revision"
+      ]
+    },
+    {
+      "name": "GET_CAPS",
+      "opcode": 2,
+      "scope": "session",
+      "format": "",
+      "fields": [],
+      "reply_format": "<IQ16I",
+      "reply_fields": [
+        "result",
+        "features",
+        "max_payload",
+        "physical_buses",
+        "logical_channels",
+        "rx_routes",
+        "tx_transfers",
+        "rx_transfers",
+        "periodic_slots",
+        "periodic_payload_max",
+        "control_event_slots",
+        "max_body",
+        "bitrate",
+        "as_timeout_ms",
+        "bs_timeout_ms",
+        "cr_timeout_ms",
+        "timestamp_quality",
+        "wft_max"
+      ]
+    },
+    {
+      "name": "HEARTBEAT",
+      "opcode": 3,
+      "scope": "session",
+      "format": "",
+      "fields": []
+    },
+    {
+      "name": "SESSION_CLOSE",
+      "opcode": 4,
+      "scope": "session",
+      "format": "",
+      "fields": []
+    },
+    {
+      "name": "GET_INFO",
+      "opcode": 5,
+      "scope": "session",
+      "format": "",
+      "fields": [],
+      "reply_format": "<I12s20s20s16s",
+      "reply_fields": [
+        "result",
+        "mcu_uid",
+        "firmware_version_ascii",
+        "build_revision_ascii",
+        "board_name_ascii"
+      ]
+    },
+    {
+      "name": "CHANNEL_OPEN",
+      "opcode": 16,
+      "scope": "new_channel",
+      "format": "<III",
+      "fields": [
+        "protocol_id",
+        "connect_flags",
+        "bitrate"
+      ]
+    },
+    {
+      "name": "CHANNEL_CLOSE",
+      "opcode": 17,
+      "scope": "channel",
+      "format": "",
+      "fields": [],
+      "reply_format": "<II",
+      "reply_fields": [
+        "result",
+        "last_event_seq"
+      ]
+    },
+    {
+      "name": "SET_TIMING",
+      "opcode": 18,
+      "scope": "channel",
+      "format": "<IIIHBBI",
+      "fields": [
+        "as_timeout_ms",
+        "bs_timeout_ms",
+        "cr_timeout_ms",
+        "wft_max",
+        "rx_bs",
+        "rx_stmin_code",
+        "reserved_zero"
+      ]
+    },
+    {
+      "name": "ROUTE_ADD",
+      "opcode": 32,
+      "scope": "channel",
+      "format": "<IIIIIBBBB",
+      "fields": [
+        "route_id",
+        "rx_can_id",
+        "tx_can_id",
+        "address_flags",
+        "fc_j2534_tx_flags",
+        "rx_ext_addr",
+        "tx_ext_addr",
+        "fc_bs",
+        "fc_stmin_code"
+      ]
+    },
+    {
+      "name": "ROUTE_REMOVE",
+      "opcode": 33,
+      "scope": "channel",
+      "format": "<I",
+      "fields": [
+        "route_id"
+      ],
+      "reply_format": "<II",
+      "reply_fields": [
+        "result",
+        "last_event_seq"
+      ]
+    },
+    {
+      "name": "TX_SUBMIT",
+      "opcode": 48,
+      "scope": "channel",
+      "format": "<IIHHI",
+      "fields": [
+        "route_id",
+        "j2534_tx_flags",
+        "payload_bytes",
+        "reserved_zero",
+        "deadline_ms"
+      ],
+      "tail": "isotp_payload",
+      "tail_length_field": "payload_bytes",
+      "tail_max": 4095
+    },
+    {
+      "name": "TX_CANCEL",
+      "opcode": 49,
+      "scope": "channel",
+      "format": "<I",
+      "fields": [
+        "target_request_id"
+      ],
+      "reply_format": "<II",
+      "reply_fields": [
+        "result",
+        "last_event_seq"
+      ]
+    },
+    {
+      "name": "CLEAR",
+      "opcode": 50,
+      "scope": "channel",
+      "format": "<I",
+      "fields": [
+        "clear_mask"
+      ],
+      "reply_format": "<II",
+      "reply_fields": [
+        "result",
+        "last_event_seq"
+      ]
+    },
+    {
+      "name": "PERIODIC_ADD",
+      "opcode": 64,
+      "scope": "channel",
+      "format": "<IIIIHH",
+      "fields": [
+        "periodic_id",
+        "route_id",
+        "interval_us",
+        "j2534_tx_flags",
+        "payload_bytes",
+        "reserved_zero"
+      ],
+      "tail": "isotp_payload",
+      "tail_length_field": "payload_bytes",
+      "tail_max": 64
+    },
+    {
+      "name": "PERIODIC_REMOVE",
+      "opcode": 65,
+      "scope": "channel",
+      "format": "<I",
+      "fields": [
+        "periodic_id"
+      ]
+    },
+    {
+      "name": "EVENT_ACK",
+      "opcode": 80,
+      "scope": "session",
+      "format": "<I",
+      "fields": [
+        "event_seq"
+      ]
+    },
+    {
+      "name": "GET_STATUS",
+      "opcode": 81,
+      "scope": "session",
+      "format": "",
+      "fields": [],
+      "reply_format": "<I6I",
+      "reply_fields": [
+        "result",
+        "bus_state",
+        "tx_error_count",
+        "rx_error_count",
+        "event_overflows",
+        "dropped_rx",
+        "lease_remaining_ms"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "TX_DONE",
+      "opcode": 256,
+      "format": "<IIIIIBBH",
+      "fields": [
+        "event_seq",
+        "route_id",
+        "transfer_id",
+        "j2534_rx_status",
+        "can_id",
+        "ext_addr",
+        "reserved_zero",
+        "payload_bytes_zero"
+      ]
+    },
+    {
+      "name": "RX_START",
+      "opcode": 257,
+      "format": "<IIIIIBBH",
+      "fields": [
+        "event_seq",
+        "route_id",
+        "transfer_id",
+        "j2534_rx_status",
+        "can_id",
+        "ext_addr",
+        "reserved_zero",
+        "expected_payload_bytes"
+      ]
+    },
+    {
+      "name": "RX_COMPLETE",
+      "opcode": 258,
+      "format": "<IIIIIBBH",
+      "fields": [
+        "event_seq",
+        "route_id",
+        "transfer_id",
+        "j2534_rx_status",
+        "can_id",
+        "ext_addr",
+        "reserved_zero",
+        "payload_bytes"
+      ],
+      "tail": "isotp_payload",
+      "tail_length_field": "payload_bytes",
+      "tail_max": 4095
+    },
+    {
+      "name": "TRANSFER_ERROR",
+      "opcode": 259,
+      "format": "<IIIIIBBHIi",
+      "fields": [
+        "event_seq",
+        "route_id",
+        "transfer_id",
+        "j2534_rx_status_zero",
+        "can_id",
+        "ext_addr",
+        "reserved_zero",
+        "payload_bytes_zero",
+        "reason",
+        "zephyr_error"
+      ]
+    },
+    {
+      "name": "BUS_STATE",
+      "opcode": 260,
+      "format": "<IIII",
+      "fields": [
+        "event_seq",
+        "bus_state",
+        "tx_error_count",
+        "rx_error_count"
+      ]
+    },
+    {
+      "name": "OVERFLOW",
+      "opcode": 261,
+      "format": "<III",
+      "fields": [
+        "event_seq",
+        "event_overflows",
+        "dropped_rx"
+      ]
+    }
+  ],
+  "transfer_error_reasons": {
+    "CAN_TX_TIMEOUT": 1,
+    "FLOW_CONTROL_TIMEOUT": 2,
+    "CONSECUTIVE_FRAME_TIMEOUT": 3,
+    "WRONG_SEQUENCE": 4,
+    "PEER_OVERFLOW": 5,
+    "WAIT_LIMIT": 6,
+    "CANCELLED": 7,
+    "LOCAL_OVERFLOW": 8,
+    "BUS_OFF": 9,
+    "OTHER": 10
+  },
+  "feature_bits": {
+    "EXTENDED_ADDRESS": 0,
+    "CAN_29BIT": 1,
+    "RX_START": 2,
+    "PER_MESSAGE_TX_PADDING": 3,
+    "RX_PADDING_STATUS": 4,
+    "SAFE_TX_CANCEL": 5,
+    "PERIODIC": 6,
+    "RUNTIME_TIMEOUTS": 7
+  },
+  "address_flag_bits": {
+    "EXTENDED_ADDRESS": 0,
+    "CAN_29BIT": 1
+  },
+  "clear_mask_bits": {
+    "TX": 0,
+    "RX": 1,
+    "PERIODIC": 2,
+    "ROUTES": 3
+  },
+  "timestamp_quality": {
+    "CAN_CONTROLLER": 0,
+    "CAN_CALLBACK": 1,
+    "WORKER_ONLY": 2
+  },
+  "target_limits": {
+    "physical_buses": 1,
+    "logical_channels": 1,
+    "rx_routes": 1,
+    "tx_transfers": 1,
+    "rx_transfers": 1,
+    "periodic_slots": 2,
+    "periodic_payload_max": 64,
+    "control_event_slots": 8,
+    "bitrate": 500000,
+    "default_lease_ms": 5000,
+    "heartbeat_ms": 1000,
+    "periodic_interval_us_min": 5000,
+    "periodic_interval_us_max": 65535000
+  },
+  "windows_only_state": [
+    "virtual_J1962_PINS",
+    "forced_on_ignition",
+    "emulated_vbatt_mv",
+    "device_info",
+    "J2534_read_queue",
+    "last_error_text"
+  ],
+  "usb_interface": {
+    "guid": "{5D4E7C68-9BC1-4E2B-9D68-5C9AB801D9F2}",
+    "class": 255,
+    "subclass": 73,
+    "protocol": 1,
+    "bulk_in_count": 1,
+    "bulk_out_count": 1,
+    "vid_pid": "build_configuration_verify_before_deployment"
+  },
+  "bus_states": {
+    "STOPPED": 0,
+    "ERROR_ACTIVE": 1,
+    "ERROR_WARNING": 2,
+    "ERROR_PASSIVE": 3,
+    "BUS_OFF": 4,
+    "UNKNOWN": 5
+  }
+}

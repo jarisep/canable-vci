@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "origin": "anonymized_offline_reference",
+  "source": "Private reference capture (not distributed); application data anonymized",
+  "auto_replay_to_vehicle": false,
+  "comparison": {
+    "data_and_flags": "exact anonymized offline bytes, allowing documented padding-status differences",
+    "channel_and_timestamp": "source metadata, normalize identifiers and compare event order",
+    "extra_data_index": "not captured, not inferred"
+  },
+  "cases": [
+    {
+      "id": "bsi_negative_session",
+      "notes": "ECU negative response is data, not a J2534 API failure.",
+      "records": [
+        {
+          "line": 8,
+          "kind": "message",
+          "direction": "TX",
+          "channel": 3,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 0,
+          "tx_flags": 0,
+          "timestamp_us": 0,
+          "data_size": 6,
+          "data_hex": "0000075210c0",
+          "can_id": 1874
+        },
+        {
+          "line": 9,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 3,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 9,
+          "tx_flags": 0,
+          "timestamp_us": 1220897749,
+          "data_size": 4,
+          "data_hex": "00000752",
+          "can_id": 1874
+        },
+        {
+          "line": 10,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 3,
+          "index": 1,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 16,
+          "tx_flags": 0,
+          "timestamp_us": 1220908175,
+          "data_size": 7,
+          "data_hex": "000006527f1012",
+          "can_id": 1618
+        }
+      ]
+    },
+    {
+      "id": "bsi_single_frame_session",
+      "notes": "A single-frame response has no START_OF_MESSAGE record in this capture.",
+      "records": [
+        {
+          "line": 14,
+          "kind": "message",
+          "direction": "TX",
+          "channel": 5,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 0,
+          "tx_flags": 0,
+          "timestamp_us": 0,
+          "data_size": 6,
+          "data_hex": "000007521003",
+          "can_id": 1874
+        },
+        {
+          "line": 15,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 5,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 9,
+          "tx_flags": 0,
+          "timestamp_us": 1221744521,
+          "data_size": 4,
+          "data_hex": "00000752",
+          "can_id": 1874
+        },
+        {
+          "line": 16,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 5,
+          "index": 1,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 16,
+          "tx_flags": 0,
+          "timestamp_us": 1221763320,
+          "data_size": 10,
+          "data_hex": "00000652500300a5a6a7",
+          "can_id": 1618
+        }
+      ]
+    },
+    {
+      "id": "bsi_multiframe_identification",
+      "notes": "TX indication, RX start, then assembled payload; 0x10 denotes padding error.",
+      "records": [
+        {
+          "line": 17,
+          "kind": "message",
+          "direction": "TX",
+          "channel": 5,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 0,
+          "tx_flags": 0,
+          "timestamp_us": 0,
+          "data_size": 7,
+          "data_hex": "0000075222f080",
+          "can_id": 1874
+        },
+        {
+          "line": 18,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 5,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 9,
+          "tx_flags": 0,
+          "timestamp_us": 1221908391,
+          "data_size": 4,
+          "data_hex": "00000752",
+          "can_id": 1874
+        },
+        {
+          "line": 19,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 5,
+          "index": 1,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 2,
+          "tx_flags": 0,
+          "timestamp_us": 1221928088,
+          "data_size": 4,
+          "data_hex": "00000652",
+          "can_id": 1618
+        },
+        {
+          "line": 20,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 5,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 16,
+          "tx_flags": 0,
+          "timestamp_us": 1221943262,
+          "data_size": 29,
+          "data_hex": "0000065262f080a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9ba",
+          "can_id": 1618
+        }
+      ]
+    },
+    {
+      "id": "longest_assembled_response",
+      "notes": "Largest assembled PASSTHRU_MSG in the Bosch capture; no CAN frame timing is present.",
+      "records": [
+        {
+          "line": 482,
+          "kind": "message",
+          "direction": "TX",
+          "channel": 13,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 0,
+          "tx_flags": 0,
+          "timestamp_us": 0,
+          "data_size": 7,
+          "data_hex": "0000075222e7ff",
+          "can_id": 1874
+        },
+        {
+          "line": 483,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 13,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 9,
+          "tx_flags": 0,
+          "timestamp_us": 1272247466,
+          "data_size": 4,
+          "data_hex": "00000752",
+          "can_id": 1874
+        },
+        {
+          "line": 484,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 13,
+          "index": 1,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 2,
+          "tx_flags": 0,
+          "timestamp_us": 1272270924,
+          "data_size": 4,
+          "data_hex": "00000652",
+          "can_id": 1618
+        },
+        {
+          "line": 485,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 13,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 16,
+          "tx_flags": 0,
+          "timestamp_us": 1273520879,
+          "data_size": 1755,
+          "data_hex": "0000065262e7ffa5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778",
+          "can_id": 1618
+        }
+      ]
+    },
+    {
+      "id": "extended_address_partial_timeout",
+      "notes": "Address byte after the 4-byte CAN ID; ReadMsgs returns a TX indication even with ERR_TIMEOUT=9.",
+      "records": [
+        {
+          "line": 573,
+          "kind": "message",
+          "direction": "TX",
+          "channel": 33,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 0,
+          "tx_flags": 128,
+          "timestamp_us": 0,
+          "data_size": 7,
+          "data_hex": "00000731411003",
+          "can_id": 1841
+        },
+        {
+          "line": 574,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 33,
+          "index": 0,
+          "result": 9,
+          "protocol": 32773,
+          "rx_status": 137,
+          "tx_flags": 0,
+          "timestamp_us": 1368385718,
+          "data_size": 5,
+          "data_hex": "0000073141",
+          "can_id": 1841
+        }
+      ]
+    },
+    {
+      "id": "extended_address_complete_response",
+      "notes": "Completed extended-address response retains its separate address byte.",
+      "records": [
+        {
+          "line": 1196,
+          "kind": "message",
+          "direction": "TX",
+          "channel": 101,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 0,
+          "tx_flags": 128,
+          "timestamp_us": 0,
+          "data_size": 7,
+          "data_hex": "000006c8481003",
+          "can_id": 1736
+        },
+        {
+          "line": 1197,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 101,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 137,
+          "tx_flags": 0,
+          "timestamp_us": 1437977711,
+          "data_size": 5,
+          "data_hex": "000006c848",
+          "can_id": 1736
+        },
+        {
+          "line": 1198,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 101,
+          "index": 1,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 144,
+          "tx_flags": 0,
+          "timestamp_us": 1438011885,
+          "data_size": 7,
+          "data_hex": "00000628485003",
+          "can_id": 1576
+        }
+      ]
+    },
+    {
+      "id": "extended_address_multiframe_response",
+      "notes": "First-frame indication also includes the extended address; payload assembly remains independent of it.",
+      "records": [
+        {
+          "line": 1199,
+          "kind": "message",
+          "direction": "TX",
+          "channel": 101,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 0,
+          "tx_flags": 128,
+          "timestamp_us": 0,
+          "data_size": 8,
+          "data_hex": "000006c84822f080",
+          "can_id": 1736
+        },
+        {
+          "line": 1200,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 101,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 137,
+          "tx_flags": 0,
+          "timestamp_us": 1438151459,
+          "data_size": 5,
+          "data_hex": "000006c848",
+          "can_id": 1736
+        },
+        {
+          "line": 1201,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 101,
+          "index": 1,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 130,
+          "tx_flags": 0,
+          "timestamp_us": 1438212141,
+          "data_size": 5,
+          "data_hex": "0000062848",
+          "can_id": 1576
+        },
+        {
+          "line": 1202,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 101,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 144,
+          "tx_flags": 0,
+          "timestamp_us": 1438293490,
+          "data_size": 30,
+          "data_hex": "000006284862f080a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9ba",
+          "can_id": 1576
+        }
+      ]
+    },
+    {
+      "id": "multiframe_request",
+      "notes": "Transmit payload exceeds a Classical CAN single frame; firmware must also segment requests.",
+      "records": [
+        {
+          "line": 3806,
+          "kind": "message",
+          "direction": "TX",
+          "channel": 193,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 0,
+          "tx_flags": 0,
+          "timestamp_us": 0,
+          "data_size": 18,
+          "data_hex": "000007642e2113a5a6a7a8a9aaabacadaeaf",
+          "can_id": 1892
+        },
+        {
+          "line": 3807,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 193,
+          "index": 0,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 9,
+          "tx_flags": 0,
+          "timestamp_us": 3489245492,
+          "data_size": 4,
+          "data_hex": "00000764",
+          "can_id": 1892
+        },
+        {
+          "line": 3808,
+          "kind": "message",
+          "direction": "RX",
+          "channel": 193,
+          "index": 1,
+          "result": 0,
+          "protocol": 32773,
+          "rx_status": 16,
+          "tx_flags": 0,
+          "timestamp_us": 3489266766,
+          "data_size": 7,
+          "data_hex": "000006647f2e13",
+          "can_id": 1636
+        }
+      ]
+    },
+    {
+      "id": "channel_and_pin_lifecycle",
+      "notes": "Sequential channels; requested 3/8 was mapped to Bosch 6/14 by the old proxy.",
+      "records": [
+        {
+          "line": 6,
+          "kind": "connect",
+          "result": 0,
+          "protocol": 32773,
+          "flags": 0,
+          "baud": 500000,
+          "channel": 3
+        },
+        {
+          "line": 7,
+          "kind": "pins",
+          "channel": 3,
+          "requested": 776,
+          "forwarded": 1550,
+          "result": 0
+        },
+        {
+          "line": 11,
+          "kind": "disconnect",
+          "channel": 3,
+          "result": 0
+        },
+        {
+          "line": 12,
+          "kind": "connect",
+          "result": 0,
+          "protocol": 32773,
+          "flags": 0,
+          "baud": 500000,
+          "channel": 5
+        },
+        {
+          "line": 13,
+          "kind": "pins",
+          "channel": 5,
+          "requested": 776,
+          "forwarded": 1550,
+          "result": 0
+        }
+      ]
+    }
+  ]
+}

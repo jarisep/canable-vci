@@ -1,0 +1,36 @@
+; SPDX-License-Identifier: Apache-2.0
+LIBRARY CanablePcmBridge
+EXPORTS
+    PCM_CancelComPrimitive @1
+    PCM_CloseLogicalLink @2
+    PCM_ConnectLogicalLink @3
+    PCM_ConnectModule @4
+    PCM_DestroyItem @5
+    PCM_DisconnectLogicalLink @6
+    PCM_DisconnectModule @7
+    PCM_FreeCablesList @8
+    PCM_FreePinsList @9
+    PCM_GetAvailableModules @10
+    PCM_GetCableID @11
+    PCM_GetCables @12
+    PCM_GetCapabilities @13
+    PCM_GetComParam @14
+    PCM_GetEventItem @15
+    PCM_GetPins @16
+    PCM_GetStateVCI @17
+    PCM_GetStatus @18
+    PCM_GetStatus_CopDownloadProgress @19
+    PCM_GetVersion @20
+    PCM_Ioctl @21
+    PCM_OpenLogicalLink @22
+    PCM_Prepare @23
+    PCM_ReadVoltage @24
+    PCM_RegisterEventCallback @25
+    PCM_ScanAllProtocols @26
+    PCM_SetComParam @27
+    PCM_SetMVCI @28
+    PCM_SetMVCIExp @29
+    PCM_StartComPrimitive @30
+    PCM_StartComPrimitive_withResult @31
+    PCM_Switch_Component @32
+    PCM_Unprepare @33
