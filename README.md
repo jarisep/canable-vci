@@ -1,89 +1,83 @@
-# CANable VCI
+# CANable J2534
 
-An experimental CANable ISO-TP adapter for Windows J2534 applications and
-VCI Mediator integration. This is a standalone project, maintained alongside
-[ET2500](https://github.com/jarisep/et2500).
+Use a CANable adapter as a **J2534 PassThru interface on Windows**.
+The project provides an x86 J2534 DLL, an x64 Windows service and CANable
+firmware that handles ISO-TP directly on the device.
 
 ```text
-J2534 application / VCI Mediator
-    -> x86 CanableJ2534.dll
+J2534 application
+    -> CanableJ2534.dll (x86)
     -> local named pipe
-    -> x64 CanableVciService.exe
-    -> built-in Windows WinUSB
-    -> CANable ciso-0.2.1 firmware (Zephyr ISO-TP)
-    -> Classical CAN, fixed physical OBD pins 3/8
+    -> CanableVciService.exe (x64)
+    -> Windows WinUSB
+    -> CANable firmware: CAN + ISO-TP
 ```
 
-The Windows package provides the project's own J2534 DLL, service and optional
-Mediator bridge. It uses Microsoft's built-in WinUSB; there is no separate kernel
-driver to install or redistribute. Firmware advertises the interface through
-Microsoft OS descriptors.
+Windows uses its built-in WinUSB driver. The project's Windows package supplies
+the userspace J2534 adapter and service.
 
-## Supported development target
+## Features
 
-- MKS CANable 2.0 Pro, STM32G431C8, verified 64 KiB flash / 32 KiB RAM.
-- Classical CAN at 500 kbit/s; payloads up to 4095 bytes.
-- One channel, one exact ISO-TP route, one active TX and one RX.
-- Standard/29-bit CAN IDs and ISO-TP extended addressing.
-- Physical vehicle cable fixed to OBD 3/8. Virtual 6/14 is a compatibility alias;
-  selecting it does not move physical CAN wires.
-- x86 J2534 04.04 DLL, x64 Windows service, optional x86 Mediator bridge.
-- Independent software ignition and battery emulation; no voltage sensor or
-  programming-voltage hardware.
-
-## Current status
-
-The ciso-0.2.1 correction shares the persistent receiver's hardware filter with
-Flow Control. It fixes a multi-frame TX failure reproduced with M_CAN first-match
-filter delivery. Windows logging uses a bounded queue and a dedicated writer.
-
-Recorded project validation includes 33 ISO-TP simulations, three USB simulations,
-13 public portable checks (22 in the original private workspace), 482 simulated J2534 assertions and nine
-reference cases. The flashed unit passed 12 real USB protocol cases and two
-lease-recovery cases. The updated Windows service passed 25 real USB identification
-checks. Vehicle ECU discovery and parameter reads have been observed, but physical
-post-correction multi-frame interoperability and sub-millisecond timing remain
-open. These results do not establish suitability for ECU programming.
-
-Public fixtures preserve addressing, message lengths, flags and event order while
-replacing identifying application data. Raw vehicle captures, vendor software,
-DiagBox installers, activation/profile experiments, credentials and device backups
-are not distributed. Public fixture checks validate the anonymized transport
-contract; they do not reproduce the withheld capture's exact data bytes.
+- J2534 04.04 interface, including ISO15765 and ISO15765_PS.
+- ISO-TP segmentation, reassembly, Flow Control and transfer timing in firmware.
+- Standard and 29-bit CAN identifiers, with extended addressing support.
+- Payloads up to 4095 bytes, message filters and bounded periodic jobs.
+- USB ownership, transfer cancellation and disconnect recovery.
+- Virtual pin selection and independently emulated ignition/battery values.
+- Bounded asynchronous logging in the Windows service.
 
 ## Get started
 
-- [Firmware build and BOOT/DFU recovery](docs/BUILD_AND_RECOVERY.md)
-- [Windows package installation and restoration](docs/WINDOWS.md)
-- [USB wire protocol](docs/USB_PROTOCOL.md)
-- [J2534 implementation contract](docs/J2534_IMPLEMENTATION.md)
-- [Release validation and tested scope](docs/VALIDATION.md)
-- [License and dependency notices](NOTICE)
+Download the [latest release](https://github.com/jarisep/canable-vci/releases/latest).
+It includes a firmware package, a Windows package and SHA-256 checksums.
 
-Release assets contain the CANable firmware and Windows userspace package.
-Build from source when you need changes. Do not replay recorded diagnostic
-sessions into a vehicle. Hardware tests require explicit bounded commands;
-the portable checks and default simulation tests do not access a device.
+1. Identify your CANable and preserve its current firmware before flashing.
+2. Follow the [firmware build and BOOT/DFU recovery guide](docs/BUILD_AND_RECOVERY.md).
+3. Extract the Windows package and follow the [Windows installation guide](docs/WINDOWS.md).
+4. Register the **CANable ISO-TP** J2534 provider and select it in your application.
 
-Run the portable checks:
+The source includes build scripts, installation/restoration tools and tests.
+
+## Current hardware and limits
+
+The tested target is **MKS CANable 2.0 Pro, STM32G431C8**, with 64 KiB flash and
+32 KiB RAM. The current firmware uses Classical CAN at 500 kbit/s, one channel,
+one exact ISO-TP route, one active TX and one RX.
+
+The project's vehicle cable uses physical OBD pins **3/8**. Virtual 6/14 selection
+is a compatibility alias; it does not move the physical wires. Ignition and
+battery values are software emulation. There is no voltage sensor or programming
+voltage hardware.
+
+This is an experimental adapter. USB operation, ECU discovery and parameter reads
+have been tested, but broader vehicle interoperability and physical
+sub-millisecond timing still need verification. ECU programming is not a verified
+use case. See [validation and tested scope](docs/VALIDATION.md).
+
+## Tests and protocol
+
+The current public build passes 33 ISO-TP simulations, three USB simulations,
+13 portable checks and 482 simulated J2534 assertions. Fixtures use anonymized
+application data. Do not replay recorded sessions into a vehicle.
 
 ```sh
 python3 -m unittest discover -s tests -v
 python3 tools/make_usb_vectors.py --check
 python3 tools/make_j2534_cases.py --check
-g++ -std=c++17 -O2 -pthread -I windows/include windows/tests/async_log_test.cpp -o /tmp/canable-log-test
-/tmp/canable-log-test
 ```
 
-An optional [GitHub Actions workflow example](docs/ci/offline-checks.yml) runs
-these portable checks and the pinned firmware simulations. It is provided as
-a template; this initial publication does not install a repository workflow.
+- [J2534 implementation contract](docs/J2534_IMPLEMENTATION.md)
+- [CANable USB protocol](docs/USB_PROTOCOL.md)
+- [Optional CI workflow template](docs/ci/offline-checks.yml)
+
+## Bonus: VCI Mediator support
+
+An optional bridge adapts CANable identification and ignition reporting for a
+compatible, separately installed VCI Mediator. See the
+[Mediator integration instructions](docs/WINDOWS.md#optional-mediator-bridge).
 
 ## License
 
-Project-authored source, documentation and modifications are **Apache-2.0**.
-The modified Zephyr ISO-TP files retain their original notices and Apache-2.0
-license. STM32 HAL, CMSIS and Windows runtime components retain their own licenses;
-see [NOTICE](NOTICE), [licenses/](licenses/) and
-[firmware provenance](firmware/vendor/PROVENANCE.md). No license is granted for
-third-party diagnostic applications, their native DLLs, or vendor trademarks.
+Project-authored code and modifications use **Apache-2.0**, matching the Zephyr
+ISO-TP base. Original notices are retained; dependencies keep their own licenses.
+See [LICENSE](LICENSE), [NOTICE](NOTICE) and [firmware provenance](firmware/vendor/PROVENANCE.md).
