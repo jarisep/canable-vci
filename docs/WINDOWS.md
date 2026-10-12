@@ -52,9 +52,13 @@ to LocalSystem and the installing user's SID. The x86 J2534 provider appears as
 own registry state and refuses to overwrite an unrelated existing key.
 
 The application must reopen its J2534 connection after a service restart.
-Physical wiring is always OBD 3/8; virtual pin aliases and software ignition do
-not move wires or physically switch ignition. USB loss still returns a device
-error, independently of emulated voltage values.
+The development cable used OBD 3/8. Pin-selection requests are accepted virtually
+to accommodate applications that expect a VCI pin multiplexer; CANable has no
+physical mux. The cable determines the connected bus. See the
+[wiring and alias explanation](../README.md#obd-wiring-and-pin-selection-compatibility)
+for the reason and how to use another pinout. Software ignition does not switch
+vehicle ignition. USB loss still returns a device error independently of voltage
+emulation.
 
 For identification without CAN traffic, close diagnostic applications, then:
 

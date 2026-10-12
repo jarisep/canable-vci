@@ -42,7 +42,7 @@ The service owns USB/state. Named-pipe messages contain session/request/opcode a
 | Identifier | Requirement |
 | --- | --- |
 | GET_CONFIG=1 / SET_CONFIG=2 | Channel SCONFIG_LIST; validate counts/pointers; unsupported parameters return errors. |
-| J1962_PINS=0x8001 parameter | Accept 0308 and alias 060E, return last selection. Proposed default 060E is unobserved. Physical pins always 3/8. Reject other pairs. |
+| J1962_PINS=0x8001 parameter | Accept virtual 0308 and 060E, return last selection; current default 060E. Compatibility for applications expecting a pin mux, which CANable lacks. The development cable used 3/8; actual pins depend on wiring. Reject other pairs. |
 | READ_VBATT=3 | DeviceID, NULL input, uint32 millivolt output; independent emulated vbatt, default 13500. |
 | Vendor IOCTL 0x800E | NULL input, uint32 mV; forced_on=13500, manual_off=0. Own Mediator bridge reads the same independent service state without a foreign Vendor identity. |
 | READ_PROG_VOLTAGE=0x0E | Separate standard query; no ignition control or physical programming voltage support. |
