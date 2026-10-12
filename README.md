@@ -47,16 +47,18 @@ one exact ISO-TP route, one active TX and one RX.
 Ignition and battery values are software emulation. There is no voltage sensor
 or programming voltage hardware.
 
-This is an experimental adapter. USB operation, ECU discovery and parameter reads
-have been tested, but broader vehicle interoperability and physical
+The project has been tested with **Stellantis diagnostic software and DiagBox**,
+including USB operation, ECU discovery and parameter reads. This is an
+experimental adapter; broader vehicle interoperability and physical
 sub-millisecond timing still need verification. ECU programming is not a verified
 use case. See [validation and tested scope](docs/VALIDATION.md).
 
 ## OBD wiring and pin-selection compatibility
 
-The development setup used OBD pins **3/8**. CANable is not tied to that OBD pin
-pair: its CAN_H and CAN_L terminals connect to whichever vehicle bus the cable
-is wired to.
+The development setup used OBD pins **3/8** for the vehicle CAN bus accessed
+during Stellantis/DiagBox testing. This test setup is the reason for that cable
+pinout. CANable is not tied to the pair: its CAN_H and CAN_L terminals connect
+to whichever vehicle bus the cable is wired to.
 
 Some J2534 applications expect a VCI with a pin multiplexer and request pin
 switching through `SET_CONFIG(J1962_PINS)`. CANable has no pin multiplexer.
@@ -100,8 +102,9 @@ python3 tools/make_j2534_cases.py --check
 
 ## Bonus: VCI Mediator support
 
-An optional bridge adapts CANable identification and ignition reporting for a
-compatible, separately installed VCI Mediator. See the
+The optional bridge was added for the Stellantis/DiagBox test setup, which uses
+VCI Mediator. It adapts CANable identification and ignition reporting for a
+compatible, separately installed Mediator. The main interface remains J2534. See the
 [Mediator integration instructions](docs/WINDOWS.md#optional-mediator-bridge).
 
 ## License
