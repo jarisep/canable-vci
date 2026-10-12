@@ -102,10 +102,19 @@ python3 tools/make_j2534_cases.py --check
 
 ## Bonus: VCI Mediator support
 
-The optional bridge was added for the Stellantis/DiagBox test setup, which uses
-VCI Mediator. It adapts CANable identification and ignition reporting for a
-compatible, separately installed Mediator. The main interface remains J2534. See the
-[Mediator integration instructions](docs/WINDOWS.md#optional-mediator-bridge).
+The Stellantis/DiagBox test setup uses VCI Mediator's native `PCMToJ2534` component.
+The optional **CanablePcmBridge.dll** sits in front of that component and adds
+CANable module identification and independent software ignition reporting. Native
+communication operations continue through the original component to the J2534
+DLL; other adapters retain the native path.
+
+The bridge is x86 and targets an explicitly checked native ABI. Its management
+script backs up the affected Mediator INI files and supports byte-for-byte
+restoration. Vendor DLLs are not included or replaced. Applications that use
+J2534 directly do not need the bridge.
+
+See the [Mediator bridge guide](docs/MEDIATOR_BRIDGE.md) for its architecture,
+supported version, adapted calls, activation, tests, logs and restoration.
 
 ## License
 

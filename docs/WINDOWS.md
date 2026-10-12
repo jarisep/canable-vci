@@ -72,6 +72,9 @@ programming-voltage operations.
 
 ## Optional Mediator bridge
 
+The [dedicated bridge guide](MEDIATOR_BRIDGE.md) explains the PCM/J2534 call path,
+CANable-specific adaptations, supported native binary, settings and restoration.
+
 Only use the bridge with a compatible, separately installed VCI Mediator. It
 adapts CANable naming and independent ignition and forwards other providers to
 the original native DLL. That proprietary DLL is not redistributed. The bridge
